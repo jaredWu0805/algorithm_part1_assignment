@@ -16,31 +16,20 @@ public class Solver {
     // Inner class Node
     private class Node {
 
-        private int moves;
-        private int manhattan;
-        private int priority;
-        private Board board;
-        private Node prev;
+        private final int moves;
+        private final int priority;
+        private final Board board;
+        private final Node prev;
 
         Node(int moves, Node prev, Board board) {
             this.moves = moves + 1;
             this.prev = prev;
             this.board = board;
             // can be optimized
-            manhattan = board.manhattan();
-            priority = this.moves + manhattan;
+            // int manhattan = board.manhattan();
+            priority = this.moves + board.manhattan();
         }
     }
-
-    // Comparator of Node using priority
-    private static final Comparator<Node> BY_PRIORITY = new Comparator<Node>() {
-        public int compare(Node o1, Node o2) {
-            if (o1.priority == o2.priority) {
-                return o1.moves - o2.moves;
-            }
-            return o1.priority - o2.priority;
-        }
-    };
 
     private Node ans;
     private int moves = -1;
@@ -49,6 +38,14 @@ public class Solver {
     public Solver(Board initial) {
         if (initial == null) throw new IllegalArgumentException();
 
+        Comparator<Node> BY_PRIORITY = new Comparator<Node>() {
+            public int compare(Node o1, Node o2) {
+                if (o1.priority == o2.priority) {
+                    return o1.moves - o2.moves;
+                }
+                return o1.priority - o2.priority;
+            }
+        };
         MinPQ<Node> minPQ = new MinPQ<Node>(BY_PRIORITY);
         minPQ.insert(new Node(moves, null, initial));
 
@@ -85,15 +82,15 @@ public class Solver {
         }
     }
 
-    // Print function
-    private void printNode(Node node, int i) {
-        if (i == 1) System.out.println("-----------Print Node------------");
-        if (i == -1) System.out.println("-----------Print Twin Node------------");
-        System.out.println(node.board.toString());
-        System.out.println(
-                "Priority: " + node.priority + "\nMoves: " + node.moves + "\nManhanttan: "
-                        + node.manhattan);
-    }
+    // // Print function
+    // private void printNode(Node node, int i) {
+    //     if (i == 1) System.out.println("-----------Print Node------------");
+    //     if (i == -1) System.out.println("-----------Print Twin Node------------");
+    //     System.out.println(node.board.toString());
+    //     System.out.println(
+    //             "Priority: " + node.priority + "\nMoves: " + node.moves + "\nManhanttan: "
+    //                     + node.manhattan);
+    // }
 
     // is the initial board solvable? (see below)
     public boolean isSolvable() {
@@ -109,10 +106,11 @@ public class Solver {
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
         if (!isSolvable()) return null;
+        Node temp = ans;
         Stack<Board> solution = new Stack<Board>();
-        while (ans != null) {
-            solution.push(ans.board);
-            ans = ans.prev;
+        while (temp != null) {
+            solution.push(temp.board);
+            temp = temp.prev;
         }
         return solution;
     }
