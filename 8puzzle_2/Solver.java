@@ -26,20 +26,10 @@ public class Solver {
             this.prev = prev;
             this.board = board;
             // can be optimized
-            int manhattan = board.manhattan();
-            priority = this.moves + manhattan;
+            // int manhattan = board.manhattan();
+            priority = this.moves + board.manhattan();
         }
     }
-
-    // Comparator of Node using priority
-    private static final Comparator<Node> BY_PRIORITY = new Comparator<Node>() {
-        public int compare(Node o1, Node o2) {
-            if (o1.priority == o2.priority) {
-                return o1.moves - o2.moves;
-            }
-            return o1.priority - o2.priority;
-        }
-    };
 
     private Node ans;
     private int moves = -1;
@@ -48,6 +38,14 @@ public class Solver {
     public Solver(Board initial) {
         if (initial == null) throw new IllegalArgumentException();
 
+        Comparator<Node> BY_PRIORITY = new Comparator<Node>() {
+            public int compare(Node o1, Node o2) {
+                if (o1.priority == o2.priority) {
+                    return o1.moves - o2.moves;
+                }
+                return o1.priority - o2.priority;
+            }
+        };
         MinPQ<Node> minPQ = new MinPQ<Node>(BY_PRIORITY);
         minPQ.insert(new Node(moves, null, initial));
 

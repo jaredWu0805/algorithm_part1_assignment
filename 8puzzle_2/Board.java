@@ -10,8 +10,9 @@ import edu.princeton.cs.algs4.Stack;
 public class Board {
     private int[][] tiles;
     private final int dimension;
-    // private int[][] direction = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
-    private int[] blankPosition = new int[2];
+    private final int[] blankPosition = new int[2];
+    private int manhattan;
+    private boolean hasManhattan = false;
 
 
     // create a board from an n-by-n array of tiles,
@@ -21,7 +22,6 @@ public class Board {
             throw new IllegalArgumentException();
         dimension = tiles.length;
         this.tiles = new int[dimension][dimension];
-
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
                 this.tiles[i][j] = tiles[i][j];
@@ -64,12 +64,20 @@ public class Board {
 
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
+        if (!hasManhattan) {
+            manhattan = calculateManhattan();
+            hasManhattan = true;
+        }
+        return manhattan;
+    }
+
+    private int calculateManhattan() {
         int m = 0;
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
                 if (tiles[i][j] == 0) continue;
                 int x = tiles[i][j] - 1;
-                int y = (x) / dimension;
+                int y = x / dimension;
                 x = x % dimension;
                 m += Math.abs(i - y);
                 m += Math.abs(j - x);
@@ -121,8 +129,23 @@ public class Board {
             int m = blankPosition[1] + dir[1];
             if (n < dimension && n >= 0 &&
                     m < dimension && m >= 0) {
-                Board tempBoard = new Board(tiles);
-                tempBoard.tiles[blankPosition[0]][blankPosition[1]] = tiles[n][m];
+                int num = tiles[n][m];
+
+                int x = num - 1;
+                int y = x / dimension;
+                x = x % dimension;
+                Board tempBoard;
+
+                if (Math.abs(y - n) + Math.abs(x - m) > Math.abs(y - blankPosition[0]) + Math
+                        .abs(x - blankPosition[1])) {
+                    tempBoard = new Board(tiles);
+                    tempBoard.manhattan = manhattan - 1;
+                }
+                else {
+                    tempBoard = new Board(tiles);
+                    tempBoard.manhattan = manhattan + 1;
+                }
+                tempBoard.tiles[blankPosition[0]][blankPosition[1]] = num;
                 tempBoard.tiles[n][m] = 0;
                 tempBoard.blankPosition[0] = n;
                 tempBoard.blankPosition[1] = m;
