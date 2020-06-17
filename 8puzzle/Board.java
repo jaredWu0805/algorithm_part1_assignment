@@ -8,12 +8,12 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 
 public class Board {
-    private int[][] tiles;
+    private int[] tiles;
     private final int dimension;
-    private final int[] blankPosition = new int[2];
+    private int blankPosition = 0;
     private int manhattan;
     private boolean hasManhattan = false;
-
+    private boolean isCool = true;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -21,13 +21,27 @@ public class Board {
         if (tiles == null || tiles.length == 0 || tiles.length == 1)
             throw new IllegalArgumentException();
         dimension = tiles.length;
-        this.tiles = new int[dimension][dimension];
+        this.tiles = new int[dimension * dimension];
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                this.tiles[i][j] = tiles[i][j];
+                this.tiles[i * dimension + j] = tiles[i][j];
                 if (tiles[i][j] == 0) {
-                    blankPosition[0] = i;
-                    blankPosition[1] = j;
+                    blankPosition = i * dimension + j;
+                }
+            }
+        }
+    }
+
+    private Board(int[] tiles) {
+        if (tiles == null || tiles.length == 0 || tiles.length == 1)
+            throw new IllegalArgumentException();
+        dimension = tiles.length;
+        this.tiles = new int[dimension * dimension];
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                this.tiles[i * dimension + j] = tiles[i * dimension + j];
+                if (tiles[i * dimension + j] == 0) {
+                    blankPosition = i * dimension + j;
                 }
             }
         }
@@ -39,7 +53,7 @@ public class Board {
         s.append(dimension + "\n");
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                s.append(String.format("%2d ", tiles[i][j]));
+                s.append(String.format("%2d ", tiles[i * dimension + j]));
             }
             s.append("\n");
         }
@@ -56,7 +70,7 @@ public class Board {
         int h = dimension * dimension - 1;
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                if (tiles[i][j] == ((j + 1) + (i * dimension))) h--;
+                if (tiles[i * dimension + j] == ((j + 1) + (i * dimension))) h--;
             }
         }
         return h;
@@ -75,8 +89,8 @@ public class Board {
         int m = 0;
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                if (tiles[i][j] == 0) continue;
-                int x = tiles[i][j] - 1;
+                if (tiles[i * dimension + j] == 0) continue;
+                int x = tiles[i * dimension + j] - 1;
                 int y = x / dimension;
                 x = x % dimension;
                 m += Math.abs(i - y);
@@ -90,8 +104,9 @@ public class Board {
     public boolean isGoal() {
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                if (i == dimension - 1 && j == dimension - 1 && tiles[i][j] == 0) return true;
-                if (tiles[i][j] != ((j + 1) + (i * dimension))) return false;
+                if (i == dimension - 1 && j == dimension - 1 && tiles[i * dimension + j] == 0)
+                    return true;
+                if (tiles[i * dimension + j] != ((j + 1) + (i * dimension))) return false;
             }
         }
         return true;
@@ -108,7 +123,7 @@ public class Board {
         if (that.dimension() != this.dimension()) return false;
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                if (that.tiles[i][j] != this.tiles[i][j]) return false;
+                if (that.tiles[i * dimension + j] != this.tiles[i * dimension + j]) return false;
             }
         }
 
@@ -125,19 +140,22 @@ public class Board {
     private void helper(Stack<Board> stack) {
         int[][] direction = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
         for (int[] dir : direction) {
-            int n = blankPosition[0] + dir[0];
-            int m = blankPosition[1] + dir[1];
+            int y = blankPosition;
+            int x = y / dimension;
+            y = y % dimension;
+            int n = x + dir[0];
+            int m = y + dir[1];
             if (n < dimension && n >= 0 &&
                     m < dimension && m >= 0) {
-                int num = tiles[n][m];
+                int num = tiles[n * dimension + m];
 
-                int x = num - 1;
-                int y = x / dimension;
-                x = x % dimension;
+                int j = num - 1;
+                int i = j / dimension;
+                j = j % dimension;
                 Board tempBoard;
 
-                if (Math.abs(y - n) + Math.abs(x - m) > Math.abs(y - blankPosition[0]) + Math
-                        .abs(x - blankPosition[1])) {
+                if (Math.abs(j - m) + Math.abs(i - n) > Math.abs(j - y) + Math
+                        .abs(i - x)) {
                     tempBoard = new Board(tiles);
                     tempBoard.manhattan = manhattan - 1;
                 }
@@ -145,10 +163,9 @@ public class Board {
                     tempBoard = new Board(tiles);
                     tempBoard.manhattan = manhattan + 1;
                 }
-                tempBoard.tiles[blankPosition[0]][blankPosition[1]] = num;
-                tempBoard.tiles[n][m] = 0;
-                tempBoard.blankPosition[0] = n;
-                tempBoard.blankPosition[1] = m;
+                tempBoard.tiles[x * dimension + y] = num;
+                tempBoard.tiles[n * dimension + m] = 0;
+                tempBoard.blankPosition = n * dimension + m;
                 stack.push(tempBoard);
             }
         }
@@ -159,11 +176,11 @@ public class Board {
         Board twin = new Board(tiles);
         int i = 0;
         int j = 0;
-        while (tiles[i][j] == 0 || tiles[i + 1][j] == 0) {
+        while (tiles[i * dimension + j] == 0 || tiles[(i + 1) * dimension + j] == 0) {
             j++;
         }
-        twin.tiles[i + 1][j] = tiles[i][j];
-        twin.tiles[i][j] = tiles[i + 1][j];
+        twin.tiles[(i + 1) * dimension + j] = tiles[i * dimension + j];
+        twin.tiles[i * dimension + j] = tiles[(i + 1) * dimension + j];
         return twin;
     }
 

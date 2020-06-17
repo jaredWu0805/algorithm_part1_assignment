@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1e4f978-b3bd-4ae1-84e9-9e1170bce808" name="Default" comment="" />
+    <list default="true" id="c1e4f978-b3bd-4ae1-84e9-9e1170bce808" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Algorithms__Part_I.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Algorithms__Part_I.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../8puzzle_2/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../8puzzle_2/Solver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DifferentSorts_Jared/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DifferentSorts_Jared/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +39,11 @@
     <analyzeAfterCompile>true</analyzeAfterCompile>
     <toolWindowToFront>false</toolWindowToFront>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1d4p3rfSg7Pz2Gc54zIUe01dYAP" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="abbreviatePackageNames" value="true" />
     <option name="autoscrollFromSource" value="true" />
@@ -43,7 +56,7 @@
     <property name="ToolWindowMessages.ShowToolbar" value="false" />
     <property name="ToolWindowRun.ShowToolbar" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="settings.saveactions" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -55,6 +68,14 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
+    <state x="-565" y="139" key="#Notifications" timestamp="1592362705722">
+      <screen x="-900" y="-504" width="900" height="1560" />
+    </state>
+    <state x="-565" y="139" key="#Notifications/0.0.1536.824/-900.-504.900.1560@-900.-504.900.1560" timestamp="1592362705722" />
+    <state x="-900" y="-79" key="SettingsEditor" timestamp="1592362895956">
+      <screen x="-900" y="-504" width="900" height="1560" />
+    </state>
+    <state x="-900" y="-79" key="SettingsEditor/0.0.1536.824/-900.-504.900.1560@-900.-504.900.1560" timestamp="1592362895956" />
     <state x="-787" y="-149" width="672" height="678" key="search.everywhere.popup" timestamp="1591794216908">
       <screen x="-900" y="-504" width="900" height="1560" />
     </state>
